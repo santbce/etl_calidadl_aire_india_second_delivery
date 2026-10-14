@@ -216,3 +216,13 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+#archivos generados por la segunda entrega
+.venv/
+*.pyc
+airflow_home/
+data/raw/cities/*.html
+data/raw/weather/*.json
+data/runs/
+data/*.sqlite
+primera_entrega/database/*.db
