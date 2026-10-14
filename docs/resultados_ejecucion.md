@@ -36,6 +36,3 @@ las mediciones de aire proceden de kaggle y no documentan todas las unidades. er
 la suite aprobó el lote válido con cobertura completa. la falla deliberada de precipitación negativa fue rechazada, su carga quedó bloqueada y la huella del warehouse no cambió. la tabla airflow_task_states.csv registra los estados reales del dag. el dump warehouse.sql conserva la instantánea postgresql.
 
 la arquitectura, los pasos etl, el diseño del dag, la api y la suite se documentan en readme.md. el repositorio ya esta publicado. la ejecucion diaria iniciada por el scheduler se comprobo con nueve tareas exitosas; ver evidencias/scheduler_run.json. falta entregar en la plataforma del curso.
-#aqui dejamos el cierre de las pruebas
-
-las 42 comprobaciones aprobaron, sin fallos. el lote valido paso 45 expectativas. los once casos invalidos fueron rechazados y su carga quedo bloqueada. el dump se restauro en una base independiente y conservo los conteos de hechos y dimensiones. la prueba manual final tambien termino con nueve tareas exitosas; ver evidencias/manual_run.json. los conteos y las fechas reales estan en evidencias/auditoria_completa.json.

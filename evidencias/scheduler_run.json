@@ -5,9 +5,9 @@
   "state": "success",
   "tasks_success": 9,
   "execution_date": "2026-10-13 00:00:00.000000",
-  "start_date": "2026-10-14 00:59:02.956129",
-  "end_date": "2026-10-14 01:21:48.089779",
-  "verified_at_utc": "2026-10-14T01:21:52.192620+00:00",
+  "start_date": "2026-10-14 03:47:25.612579",
+  "end_date": "2026-10-14 03:48:37.921568",
+  "verified_at_utc": "2026-10-14T03:48:44.286846+00:00",
   "schedule": "cada dia",
   "test_mode": "scheduler con frecuencia diaria del dag original"
 }

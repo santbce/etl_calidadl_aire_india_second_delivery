@@ -1,4 +1,4 @@
-#definimos las funciones del proyecto
+#definimos las tareas del dag y sus dependencias
 from datetime import timedelta
 from pathlib import Path
 import os

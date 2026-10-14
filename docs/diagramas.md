@@ -1,6 +1,6 @@
 #diagramas de la segunda entrega
 
-#aqui arquitectura
+#arquitectura
 
 ```mermaid
 flowchart LR
@@ -18,7 +18,7 @@ flowchart LR
   D --> V[Consultas SQL y visualizaciones]
 ```
 
-#aqui modelo estrella
+#modelo estrella
 
 grano: una medicion por ciudad y dia. el ddl completo esta en `sql/warehouse.sql`; el diagrama destaca las medidas principales.
 

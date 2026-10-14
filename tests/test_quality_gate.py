@@ -1,4 +1,4 @@
-#aqui probamos que los datos invalidos no se puedan cargar
+#probamos que los datos invalidos no se puedan cargar
 import sys
 from pathlib import Path
 import unittest
@@ -18,9 +18,18 @@ class QualityGate(unittest.TestCase):
         if not cls.source_run:
             approvals = sorted((p.ROOT/'data/runs').glob('*/approval.json'), key=lambda f:f.stat().st_mtime)
             approvals = [f for f in approvals if not f.parent.name.startswith('test_')]
-            if not approvals:
+            for approval_file in reversed(approvals):
+                try:
+                    run_id = json.loads(approval_file.read_text())['run_id']
+                    if p.workspace(run_id) != approval_file.parent:
+                        continue
+                    p.approved_dataframe(run_id)
+                except (FileNotFoundError, ValueError, KeyError):
+                    continue
+                cls.source_run = run_id
+                break
+            if not cls.source_run:
                 raise unittest.SkipTest('Ejecuta primero el notebook para generar un lote aprobado')
-            cls.source_run = json.loads(approvals[-1].read_text())['run_id']
     def test_negative_precipitation_and_changed_file_are_blocked(self):
         original = p.approved_dataframe(self.source_run)
         bad = original.copy()

@@ -1,4 +1,4 @@
-#aqui comprobamos el pipeline con datos validos y casos de error
+#comprobamos el pipeline con datos validos y casos de error
 import copy
 import hashlib
 import json

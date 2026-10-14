@@ -1,9 +1,9 @@
-#aqui definimos las funciones para extraer, transformar, validar y cargar los datos
+#preparamos las funciones del proyecto
 from pathlib import Path
 from datetime import datetime, timezone
 import os
-#aqui usamos un backend que guarda los graficos sin depender del kernel de colab
-#aqui guardamos los graficos como imagenes para mostrarlos en el notebook
+#usamos un backend que guarda los graficos sin depender del kernel de colab
+#guardamos los graficos como imagenes para mostrarlos en el notebook
 os.environ['MPLBACKEND'] = 'Agg'
 import json
 import sys
@@ -11,7 +11,7 @@ import hashlib
 import sqlite3
 import time
 from contextlib import closing
-#aqui importamos las librerias para manejar tablas y consultar las fuentes
+#importamos las librerias para manejar tablas y consultar las fuentes
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
@@ -37,14 +37,14 @@ def save_json(path, data):
     path.write_text(json.dumps(data, indent=2, ensure_ascii=False, default=str), encoding='utf-8')
 
 def workspace(run_id):
-    #aqui limpiamos el nombre de la ejecucion antes de crear su carpeta
+    #ajustamos el nombre de la ejecucion para usarlo como carpeta
     safe = ''.join(c if c.isalnum() or c in '-_' else '_' for c in run_id)
     path = ROOT / 'data/runs' / safe
     path.mkdir(parents=True, exist_ok=True)
     return path
 
 def readonly_sqlite(path):
-    #aqui abrimos la base original solo para leerla
+    #abrimos la base original solo para leerla
     return sqlite3.connect(Path(path).resolve().as_uri() + '?mode=ro', uri=True)
 
 def session():
@@ -55,7 +55,7 @@ def session():
     s.mount('https://', HTTPAdapter(max_retries=retry))
     return s
 def build_city_dataset():
-    #aqui sacamos las coordenadas de wikipedia y las guardamos en sqlite
+    #obtenemos las coordenadas de wikipedia y las guardamos en sqlite
     records = []
     raw = ROOT / 'data/raw/cities'
     raw.mkdir(parents=True, exist_ok=True)
@@ -68,7 +68,7 @@ def build_city_dataset():
             response.raise_for_status()
             (raw / (city + '.html')).write_text(response.text, encoding='utf-8')
             soup = BeautifulSoup(response.text, 'html.parser')
-            #aqui tomamos la coordenada principal de la ciudad
+            #tomamos la coordenada principal de la ciudad
             geo = soup.select_one('#coordinates .geo') or soup.select_one('table.infobox .geo')
             if geo is None:
                 raise ValueError(f'{city}: no aparece la coordenada principal; revisar HTML')
@@ -83,7 +83,7 @@ def build_city_dataset():
             time.sleep(1)
     df = pd.DataFrame(records)
     CITY_DB.parent.mkdir(parents=True, exist_ok=True)
-    #aqui reemplazamos el archivo solo cuando termina la extraccion
+    #reemplazamos el archivo al completar la extraccion
     tmp = CITY_DB.with_suffix('.pending.sqlite')
     with closing(sqlite3.connect(tmp)) as con, con:
         con.execute('DROP TABLE IF EXISTS city_coordinates')
@@ -121,7 +121,7 @@ def extract_air(run_id):
     print('Fuente 1 desde SQLite:', len(df))
 
 def extract_cities(run_id):
-    #aqui actualizamos las coordenadas y luego las extraemos desde la base de datos
+    #actualizamos las coordenadas y consultamos la tabla de sqlite
     build_city_dataset()
     path = workspace(run_id)
     with closing(readonly_sqlite(CITY_DB)) as con:
@@ -162,7 +162,7 @@ def extract_weather(run_id, offline=False):
                           'temperature_unit': 'celsius', 'precipitation_unit': 'mm', 'wind_speed_unit': 'ms'}
                 key = hashlib.sha256(json.dumps(params, sort_keys=True).encode()).hexdigest()[:16]
                 filename = cache / f"{city['city_name']}_{year}_{key}.json"
-                #aqui reutilizamos las respuestas por 24 horas para no repetir las consultas
+                #reutilizamos la cache durante 24 horas para evitar consultas repetidas
                 if filename.exists() and (offline or time.time()-filename.stat().st_mtime < 86400):
                     stored = json.loads(filename.read_text(encoding='utf-8'))
                     mode = 'cache'
@@ -218,7 +218,7 @@ def eda_sources(run_id):
 
 def transform_merge(run_id):
     path = workspace(run_id)
-    #aqui leemos las tres fuentes de esta ejecucion
+    #leemos los archivos de las tres fuentes
     air, cities, weather = (pd.read_csv(path / f'{n}.csv') for n in ['air', 'cities', 'weather'])
     for df in [air, weather]:
         df['date'] = pd.to_datetime(df['date'], errors='raise').dt.strftime('%Y-%m-%d')
@@ -226,7 +226,7 @@ def transform_merge(run_id):
     for df, columns in [(air, MEASURES), (weather, WEATHER)]:
         for c in columns:
             df[c] = pd.to_numeric(df[c], errors='raise')
-    #aqui usamos los identificadores de ciudad que tenia la primera entrega
+    #conservamos los identificadores de ciudad de la primera entrega
     enriched = air.merge(cities.drop(columns='city_name'), on='city_id', how='left', validate='many_to_one')
     enriched = enriched.merge(weather, on=['city_id', 'date'], how='left', validate='one_to_one', indicator=True)
     if not enriched['_merge'].eq('both').all():
@@ -240,10 +240,10 @@ def transform_merge(run_id):
     enriched.to_csv(path / 'enriched.csv', index=False)
     print('Merge completo:', enriched.shape)
 def validate_dataframe(df, report_path):
-    #aqui creamos la suite y ejecutamos el checkpoint de calidad
+    #definimos la suite y el checkpoint de calidad
     import great_expectations as gx
     import great_expectations.expectations as gxe
-    #aqui creamos el contexto y las reglas de calidad
+    #configuramos el contexto y las expectativas
     context = gx.get_context(mode='ephemeral')
     suite = gx.ExpectationSuite(name='contrato_calidad_aire_india')
     suite.add_expectation(gxe.ExpectTableRowCountToEqual(value=NROWS))
@@ -267,11 +267,11 @@ def validate_dataframe(df, report_path):
     batch = asset.add_batch_definition_whole_dataframe('lote_historico')
     validation = context.validation_definitions.add(gx.ValidationDefinition(data=batch, suite=suite, name='auditoria_india'))
     checkpoint = context.checkpoints.add(gx.Checkpoint(name='control_airflow', validation_definitions=[validation]))
-    #aqui ejecutamos las reglas sobre el lote integrado
+    #validamos el lote integrado con las reglas definidas
     result = checkpoint.run(batch_parameters={'dataframe': df})
     details = {'success': bool(result.success),
                'validation_results': [r.to_json_dict() for r in result.run_results.values()]}
-    #aqui comprobamos que esten las cinco ciudades y todos los dias esperados
+    #verificamos la cobertura de las cinco ciudades y del periodo completo
     expected = {(c, d) for c in CITIES for d in pd.date_range(START, END).strftime('%Y-%m-%d')}
     coverage = set(zip(df.city_name, df.date)) == expected
     success = bool(result.success and coverage)
@@ -306,7 +306,7 @@ def load_warehouse(run_id):
     with psycopg.connect(os.environ['INDIA_DATABASE_URL']) as con:
         with con.cursor() as cur:
             cur.execute((ROOT / 'sql/warehouse.sql').read_text(encoding='utf-8'))
-            #aqui hacemos la carga en una transaccion para conservar los datos si falla
+            #cargamos en una transaccion para revertir los cambios si ocurre un fallo
             for table in ['fact_air_quality','dim_city','dim_date','dim_aqi']:
                 cur.execute('DELETE FROM india_dw.' + table)
             cities = df[['city_id','city_name','latitude','longitude','source_url']].drop_duplicates()
@@ -369,7 +369,7 @@ def visualize_warehouse(run_id):
         sns.heatmap(m[['aqi']],annot=True,fmt='.2f',vmin=-1,vmax=1,cmap='coolwarm',ax=ax)
         ax.set_title(city)
     fig.tight_layout();fig.savefig(output/'04_correlaciones_ciudad.png',dpi=160);plt.close(fig)
-    #aqui usamos los datos del warehouse que ya pasaron la validacion
+    #consultamos el warehouse para generar los graficos con datos validados
     mean = float(df.aqi.mean())
     counts = df.aqi_bucket.value_counts().to_dict()
     findings = {'rows':len(df),'aqi_mean':mean,'aqi_categories':counts,

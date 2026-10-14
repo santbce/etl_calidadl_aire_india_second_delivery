@@ -365,7 +365,7 @@ Continuamos el proyecto de la primera entrega sobre aqi y contaminantes en banga
 
 
 
-Abre `Segunda_entrega_India_Colab.ipynb` en google colab. ejecuta las celdas en orden. carga el zip original `etl-calidad-aire-india-main.zip` o léelo desde la carpeta `second delivery` en tu drive. el notebook incluye el código completo y genera los archivos de este repositorio. no requiere docker.
+Abre `Segunda_entrega_India_Colab.ipynb` en google colab. ejecuta las celdas en orden. carga el zip original `etl-calidad-aire-india-main.zip` o léelo desde la carpeta `Second_Delivery/data` en tu drive. el notebook incluye el código completo y genera los archivos de este repositorio. no requiere docker.
 
 
 
@@ -595,9 +595,13 @@ Después de ejecutar el notebook, establece `INDIA_PROJECT_ROOT` con la carpeta 
 
 
 
-Las 42 comprobaciones aprobaron en colab el 13 de octubre de 2026 (hora de colombia). incluyen respuestas de api, uniones, once lotes invalidos, restricciones de postgresql, recarga sin duplicados, conciliacion con el csv, graficos, servicios y restauracion del dump. ver [auditoria completa](evidencias/auditoria_completa.json), [ejecucion diaria](evidencias/scheduler_run.json) y [prueba manual final](evidencias/manual_run.json). el scheduler diario y la prueba manual terminaron con nueve tareas exitosas cada uno.
+Las 43 comprobaciones aprobaron en colab el 13 de octubre de 2026 (hora de colombia). incluyen respuestas de api, uniones, once lotes invalidos, restricciones de postgresql, recarga sin duplicados, conciliacion con el csv, graficos, servicios y restauracion del dump. ver [auditoria completa](evidencias/auditoria_completa.json), [ejecucion diaria](evidencias/scheduler_run.json) y [prueba manual final](evidencias/manual_run.json). el scheduler diario y la prueba manual terminaron con nueve tareas exitosas cada uno.
 
 
 
 Para repetir la auditoria completa, ejecuta `tests/auditoria_colab.py` con el python del entorno de airflow despues del notebook. necesita `INDIA_PROJECT_ROOT`, `INDIA_DATABASE_URL`, `INDIA_SOURCE_ZIP` y `AIRFLOW_HOME`, ademas del lote aprobado y la evidencia del scheduler. la celda de auditoria configura la ruta del zip.
 
+
+## Ubicación de los archivos en Drive
+
+La carpeta compartida se llama `Second_Delivery`. El ZIP original está en `data/etl-calidad-aire-india-main.zip` y el notebook en `notebooks/Segunda_entrega_India_Colab.ipynb`. El notebook localiza esa estructura dentro de Mi unidad y exporta los resultados en la carpeta de la entrega.
