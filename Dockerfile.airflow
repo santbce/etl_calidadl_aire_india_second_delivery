@@ -1,0 +1,5 @@
+FROM apache/airflow:2.11.2-python3.12
+COPY requirements-final.txt requirements.txt /tmp/requirements/
+RUN pip install --no-cache-dir apache-airflow==2.11.2 -r /tmp/requirements/requirements-final.txt
+ENV PYTHONPATH=/opt/project/src INDIA_PROJECT_ROOT=/opt/project
+WORKDIR /opt/project

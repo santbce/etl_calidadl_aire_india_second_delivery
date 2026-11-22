@@ -1,0 +1,159 @@
+{
+  "model_version": "90b6dd4d28661a89",
+  "model_sha256": "90b6dd4d28661a8919537583676ba6273fc1e3702219709d5387edafda9bf85d",
+  "trained_at_utc": "2026-11-22T23:35:25.959305+00:00",
+  "model_name": "ridge",
+  "target": "AQI at the next local calendar day in India",
+  "horizon_days": 1,
+  "feature_columns": [
+    "city_name",
+    "month",
+    "day_of_week",
+    "aqi_lag1",
+    "aqi_mean7",
+    "pm25_lag1",
+    "pm10_lag1",
+    "no2_lag1",
+    "temperature_lag1",
+    "precipitation_lag1",
+    "wind_lag1"
+  ],
+  "numeric_features": [
+    "month",
+    "day_of_week",
+    "aqi_lag1",
+    "aqi_mean7",
+    "pm25_lag1",
+    "pm10_lag1",
+    "no2_lag1",
+    "temperature_lag1",
+    "precipitation_lag1",
+    "wind_lag1"
+  ],
+  "cities": [
+    "Bangalore",
+    "Chennai",
+    "Delhi",
+    "Kolkata",
+    "Mumbai"
+  ],
+  "source": "PostgreSQL india_dw.air_quality_enriched (validated dimensional warehouse)",
+  "source_rows": 18265,
+  "labeled_rows": 18230,
+  "dataset_sha256": "8a7fd361b09272ec484b8fd3bb77f226e522ec7b50dfd6ba0a57657610c1990a",
+  "source_run_ids": [
+    "manual__2026-11-22T00:00:00+00:00"
+  ],
+  "split": {
+    "train": {
+      "rows": 12750,
+      "start": "2015-01-08",
+      "end": "2021-12-31"
+    },
+    "validation": {
+      "rows": 1825,
+      "start": "2022-01-01",
+      "end": "2022-12-31"
+    },
+    "test": {
+      "rows": 3655,
+      "start": "2023-01-01",
+      "end": "2024-12-31"
+    }
+  },
+  "fit_through": "2022-12-31",
+  "selection_rule": "Lowest validation MAE among Ridge and RandomForest; test never selects the model",
+  "selection_validation_mae": 96.84939166824586,
+  "metrics": {
+    "validation": {
+      "ridge": {
+        "mae": 96.84939166824586,
+        "rmse": 112.28829552946888,
+        "r2": -0.0027454385011440596
+      },
+      "random_forest": {
+        "mae": 97.03060871308587,
+        "rmse": 112.45517906157289,
+        "r2": -0.0057282258326916136
+      },
+      "mean_baseline": {
+        "mae": 96.7092628611335,
+        "rmse": 112.13515015340191,
+        "r2": -1.2097407928512993e-05
+      },
+      "persistence_baseline": {
+        "mae": 128.89369863013698,
+        "rmse": 158.10534126646797,
+        "r2": -0.9879927663883625
+      }
+    },
+    "test": {
+      "selected_model": {
+        "mae": 98.77327127908458,
+        "rmse": 114.17293483538951,
+        "r2": -0.001508590351658512
+      },
+      "mean_baseline": {
+        "mae": 98.68034294617445,
+        "rmse": 114.09303893248551,
+        "r2": -0.00010741000590441807
+      },
+      "persistence_baseline": {
+        "mae": 132.8740902872777,
+        "rmse": 162.55093218445586,
+        "r2": -1.030052539326431
+      }
+    }
+  },
+  "baseline_mean_aqi": 317.25466209262436,
+  "beats_mean_baseline_on_test": false,
+  "beats_persistence_on_test": true,
+  "by_city_test": {
+    "Bangalore": {
+      "mae": 95.52118099156787,
+      "rmse": 110.78773551118843,
+      "r2": -7.127434597342663e-05
+    },
+    "Chennai": {
+      "mae": 103.30375454992851,
+      "rmse": 118.6544140046861,
+      "r2": -0.0007871972533661786
+    },
+    "Delhi": {
+      "mae": 97.41697029777204,
+      "rmse": 112.92923408538682,
+      "r2": -0.0019350798785848777
+    },
+    "Kolkata": {
+      "mae": 101.77101632462791,
+      "rmse": 116.11391587573881,
+      "r2": -0.003748045142361933
+    },
+    "Mumbai": {
+      "mae": 95.85343423152655,
+      "rmse": 112.20093391334927,
+      "r2": -0.0022688248178963644
+    }
+  },
+  "preprocessing": {
+    "numeric": "StandardScaler fitted on the development partition only",
+    "categorical": "OneHotEncoder fitted on city_name; unknown cities are rejected",
+    "missing": "Missing/non-finite source values are rejected; no hidden imputation",
+    "history": "First six dates and incomplete consecutive seven-day windows are excluded"
+  },
+  "limitations": [
+    "Academic next-day prediction experiment, not a validated public warning system.",
+    "The original Kaggle source does not establish measurement units or station provenance for every pollutant.",
+    "ERA5 weather is historical reanalysis; only weather from the origin day enters a forecast event.",
+    "Daily timestamps are assumed to represent local days in India, consistent with the earlier ETL.",
+    "Weak associations and weak temporal persistence can limit accuracy; baseline comparisons are reported even when superior.",
+    "The stream replays historical validated observations; event creation time is distinct from the historical observation date.",
+    "The fitted model uses target dates through 2022 only; demo forecasts for 2023-24 are chronologically out of training."
+  ],
+  "versions": {
+    "scikit-learn": "1.7.2",
+    "pandas": "2.1.4",
+    "numpy": "1.26.4",
+    "joblib": "1.5.2"
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "started_at_utc": "2026-11-22T23:36:14.140733+00:00",
+  "success": true,
+  "dag_id": "etl_india_final",
+  "checks": {
+    "airflow_metadata_exists": true,
+    "final_dag_has_run": true,
+    "dag_success": true,
+    "twelve_tasks_succeeded": true,
+    "warehouse_rows_18265": true,
+    "warehouse_city_day_unique": true,
+    "warehouse_measurement_unique": true,
+    "warehouse_five_cities": true,
+    "warehouse_matches_latest_run": true,
+    "etl_run_validation_saved": true,
+    "validated_csv_approval_matches": true,
+    "local_quality_passed": true,
+    "load_guard_accepts_approved_batch": true,
+    "weather_fifty_documented_requests": true,
+    "model_matches_latest_run": true,
+    "model_hash_matches_metadata": true,
+    "model_source_rows_match": true,
+    "model_feature_contract_matches": true,
+    "original_quality_gate_test_passed": true,
+    "warehouse_unchanged_after_rejections": true,
+    "example_event_has_no_target": true
+  },
+  "airflow_run": {
+    "id": 1,
+    "dag_id": "etl_india_final",
+    "run_id": "manual__2026-11-22T00:00:00+00:00",
+    "state": "success",
+    "execution_date": "2026-11-22 00:00:00.000000",
+    "start_date": "2026-11-22 00:00:00.000000",
+    "end_date": "2026-11-22 23:35:39.720023"
+  },
+  "airflow_tasks": {
+    "count": 12,
+    "states": {
+      "cargar_data_warehouse": "success",
+      "eda_tres_fuentes": "success",
+      "entrenar_modelo": "success",
+      "extraer_api_clima": "success",
+      "extraer_dataset_ciudades_bd": "success",
+      "extraer_primera_entrega_sqlite": "success",
+      "preparar_ejecucion": "success",
+      "publicar_kafka": "success",
+      "reporte_estatico": "success",
+      "transformar_integrar": "success",
+      "validar_great_expectations": "success",
+      "visualizar_desde_warehouse": "success"
+    }
+  },
+  "warehouse": {
+    "rows": 18265,
+    "city_count": 5,
+    "source_run_ids": [
+      "manual__2026-11-22T00:00:00+00:00"
+    ],
+    "etl_rows_recorded": 18265
+  },
+  "approved_batch": {
+    "run_id": "manual__2026-11-22T00:00:00+00:00",
+    "csv_sha256": "f6b2e42bd49944d3e84400e4b4cb267a986208e6bd56c116e683c4e32b6e2868",
+    "coverage_exact": true
+  },
+  "weather_provenance": {
+    "entries": 50,
+    "modes": {
+      "http": 50,
+      "cache": 0
+    },
+    "note": "Read the stored extraction provenance; audit makes no HTTP requests."
+  },
+  "model": {
+    "name": "ridge",
+    "version": "90b6dd4d28661a89",
+    "sha256": "90b6dd4d28661a8919537583676ba6273fc1e3702219709d5387edafda9bf85d",
+    "source_rows": 18265,
+    "split": {
+      "train": {
+        "rows": 12750,
+        "start": "2015-01-08",
+        "end": "2021-12-31"
+      },
+      "validation": {
+        "rows": 1825,
+        "start": "2022-01-01",
+        "end": "2022-12-31"
+      },
+      "test": {
+        "rows": 3655,
+        "start": "2023-01-01",
+        "end": "2024-12-31"
+      }
+    },
+    "metrics": {
+      "validation": {
+        "ridge": {
+          "mae": 96.84939166824586,
+          "rmse": 112.28829552946888,
+          "r2": -0.0027454385011440596
+        },
+        "random_forest": {
+          "mae": 97.03060871308587,
+          "rmse": 112.45517906157289,
+          "r2": -0.0057282258326916136
+        },
+        "mean_baseline": {
+          "mae": 96.7092628611335,
+          "rmse": 112.13515015340191,
+          "r2": -1.2097407928512993e-05
+        },
+        "persistence_baseline": {
+          "mae": 128.89369863013698,
+          "rmse": 158.10534126646797,
+          "r2": -0.9879927663883625
+        }
+      },
+      "test": {
+        "selected_model": {
+          "mae": 98.77327127908458,
+          "rmse": 114.17293483538951,
+          "r2": -0.001508590351658512
+        },
+        "mean_baseline": {
+          "mae": 98.68034294617445,
+          "rmse": 114.09303893248551,
+          "r2": -0.00010741000590441807
+        },
+        "persistence_baseline": {
+          "mae": 132.8740902872777,
+          "rmse": 162.55093218445586,
+          "r2": -1.030052539326431
+        }
+      }
+    }
+  },
+  "quality_failure_test": {
+    "original_test": "test_quality_gate.QualityGate.test_negative_precipitation_and_changed_file_are_blocked",
+    "return_code": 0,
+    "ran_one_test": true,
+    "skipped": false,
+    "warehouse_before": {
+      "rows": 18265,
+      "sha256": "50fdb303df7ce7deffc4b92b82af62977e7978f8f1ad7b9356828e5281850d0c"
+    },
+    "warehouse_after": {
+      "rows": 18265,
+      "sha256": "50fdb303df7ce7deffc4b92b82af62977e7978f8f1ad7b9356828e5281850d0c"
+    },
+    "scope": "Negative precipitation is rejected by GX; missing approval and changed CSV are blocked before loading.",
+    "load_guard_blocked_invalid_or_changed_batch": true,
+    "warehouse_unchanged": true
+  },
+  "stream_contract": {
+    "topic": "india.aqi.features.v1",
+    "bootstrap_servers": "kafka:9092",
+    "event_schema": "india.aqi.next-day.v1",
+    "example": "docs/event_example.json",
+    "feature_count": 11,
+    "note": "Contract example only; actual Kafka delivery is audited separately."
+  },
+  "finished_at_utc": "2026-11-22T23:36:34.853778+00:00"
+}

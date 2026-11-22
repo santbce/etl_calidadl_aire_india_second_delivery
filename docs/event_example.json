@@ -1,0 +1,25 @@
+{
+  "schema_version": "india.aqi.next-day.v1",
+  "event_id": "463833e5-3a0b-5da8-80d1-2119b6e44399",
+  "published_at": "2026-11-22T23:36:34.835186+00:00",
+  "replay_id": "documented-example",
+  "simulation": true,
+  "origin_date": "2022-12-31",
+  "target_date": "2023-01-01",
+  "city_id": 1,
+  "source_measurement_id": 14610,
+  "source_run_id": "manual__2026-11-22T00:00:00+00:00",
+  "features": {
+    "city_name": "Bangalore",
+    "month": 1.0,
+    "day_of_week": 6.0,
+    "aqi_lag1": 162.0,
+    "aqi_mean7": 306.87142857142857,
+    "pm25_lag1": 47.9,
+    "pm10_lag1": 512.5,
+    "no2_lag1": 26.4,
+    "temperature_lag1": 20.9,
+    "precipitation_lag1": 0.0,
+    "wind_lag1": 2.26
+  }
+}

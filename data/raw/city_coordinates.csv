@@ -1,0 +1,6 @@
+city_id,city_name,latitude,longitude,source_url,extracted_at_utc
+1,Bangalore,12.97889,77.59167,https://en.wikipedia.org/wiki/Bangalore,2026-11-22T23:33:41.493460+00:00
+2,Chennai,13.0825,80.275,https://en.wikipedia.org/wiki/Chennai,2026-11-22T23:33:43.236332+00:00
+3,Delhi,28.61,77.23,https://en.wikipedia.org/wiki/Delhi,2026-11-22T23:33:44.979250+00:00
+4,Kolkata,22.5675,88.37,https://en.wikipedia.org/wiki/Kolkata,2026-11-22T23:33:46.873679+00:00
+5,Mumbai,19.07611,72.8775,https://en.wikipedia.org/wiki/Mumbai,2026-11-22T23:33:48.815570+00:00

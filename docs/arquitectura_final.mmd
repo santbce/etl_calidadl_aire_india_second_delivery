@@ -1,0 +1,24 @@
+flowchart LR
+    A[(First delivery SQLite<br/>Kaggle air measurements)] --> EA[Extract air with SQL]
+    W[Wikipedia city pages] --> EC[Extract coordinates<br/>and query cities SQLite]
+    EC --> EW[Extract Open-Meteo ERA5<br/>historical daily weather]
+    EA --> EDA[Profile all three sources]
+    EC --> EDA
+    EW --> EDA
+    EDA --> T[Normalize and merge<br/>city and local day]
+    T --> Q{Great Expectations<br/>and exact coverage}
+    Q -->|fail| B[Fail validation task<br/>block analytical load]
+    Q -->|pass and hash matches| DW[(PostgreSQL india_dw<br/>facts, dimensions, run approval)]
+    DW --> R[Python static report<br/>SQL snapshot and interpreted findings]
+    DW --> F[Shared historical feature builder<br/>one-day horizon, past-only inputs]
+    F --> ML[Temporal train / validation / test<br/>Ridge and Random Forest]
+    ML --> M[Saved fitted pipeline<br/>model.joblib and metadata.json]
+    F --> P[Python producer<br/>paced historical replay]
+    M -->|training task succeeds| P
+    P --> K[(Kafka KRaft<br/>india.aqi.features.v1)]
+    K --> C[Separate Python consumer<br/>validate event, infer, persist, commit]
+    M --> C
+    C --> S[(SQLite prediction state<br/>idempotent event IDs and rejections)]
+    S --> V[Streamlit live prediction dashboard<br/>fragment refresh every 2 seconds]
+    ML --> O[Offline test metrics and predictions]
+    O --> R

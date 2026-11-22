@@ -1,5 +1,11 @@
 # ETL y análisis de la calidad del aire en India
 
+## Entrega final: modelo predictivo y Kafka
+
+La continuación con entrenamiento, Kafka real, consumidor de inferencia, reporte estático y dashboard Streamlit se documenta en **[README_FINAL.md](README_FINAL.md)**. El código y los notebooks anteriores se conservan debajo y en sus carpetas originales.
+
+El flujo nuevo predice el AQI del día siguiente por ciudad mediante una simulación con registros históricos. Los resultados y limitaciones del modelo se guardan en `artifacts/metadata.json`; las evidencias nuevas están en `evidencias/final/`.
+
 Este repositorio reúne la primera entrega y su continuación con Airflow, Great Expectations y PostgreSQL. Los archivos de la primera entrega se conservan como base del proyecto.
 
 La segunda entrega está en [el notebook de Colab](notebooks/Segunda_entrega_India_Colab.ipynb). También se puede [abrir directamente en Colab](https://colab.research.google.com/github/santbce/etl_calidadl_aire_india_second_delivery/blob/main/notebooks/Segunda_entrega_India_Colab.ipynb).

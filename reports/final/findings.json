@@ -1,0 +1,99 @@
+{
+  "rows": 18265,
+  "cities": 5,
+  "period_start": "2015-01-01",
+  "period_end": "2024-12-31",
+  "run_ids": [
+    "manual__2026-11-22T00:00:00+00:00"
+  ],
+  "aqi_mean": 317.5052121543937,
+  "aqi_std": 113.89481557892762,
+  "city_statistics": [
+    {
+      "city_name": "Mumbai",
+      "observations": 3653,
+      "mean_aqi": 318.18483438269914,
+      "median_aqi": 332.5
+    },
+    {
+      "city_name": "Kolkata",
+      "observations": 3653,
+      "mean_aqi": 317.72699151382426,
+      "median_aqi": 330.6
+    },
+    {
+      "city_name": "Delhi",
+      "observations": 3653,
+      "mean_aqi": 317.72471940870514,
+      "median_aqi": 331.5
+    },
+    {
+      "city_name": "Bangalore",
+      "observations": 3653,
+      "mean_aqi": 317.2702710101287,
+      "median_aqi": 332.0
+    },
+    {
+      "city_name": "Chennai",
+      "observations": 3653,
+      "mean_aqi": 316.61924445661106,
+      "median_aqi": 331.4
+    }
+  ],
+  "category_counts": {
+    "Good": 6,
+    "Satisfactory": 113,
+    "Moderate": 4258,
+    "Poor": 3129,
+    "Very Poor": 5501,
+    "Severe": 5258
+  },
+  "very_poor_or_severe_share": 0.5890500958116617,
+  "aqi_weather_correlations_by_city": {
+    "Bangalore": {
+      "temperature_2m_mean": -0.007080038258337564,
+      "precipitation_sum": 0.04181256757906805,
+      "wind_speed_10m_max": -0.015673834122889547
+    },
+    "Chennai": {
+      "temperature_2m_mean": 0.023394984863851782,
+      "precipitation_sum": -0.020866554416126486,
+      "wind_speed_10m_max": 0.011120834950397715
+    },
+    "Delhi": {
+      "temperature_2m_mean": 0.01725453723066047,
+      "precipitation_sum": 0.00487873171910529,
+      "wind_speed_10m_max": 0.013581580845264429
+    },
+    "Kolkata": {
+      "temperature_2m_mean": 0.0025705838365574765,
+      "precipitation_sum": 0.0333501265214514,
+      "wind_speed_10m_max": 0.0024917298020273736
+    },
+    "Mumbai": {
+      "temperature_2m_mean": -0.0044784420869067205,
+      "precipitation_sum": -0.01612837915017012,
+      "wind_speed_10m_max": 0.005995563750390929
+    }
+  },
+  "maximum_absolute_weather_correlation": 0.04181256757906805,
+  "highest_city_month": {
+    "city": "Mumbai",
+    "month": "2020-08",
+    "mean_aqi": 386.11290322580646
+  },
+  "lowest_city_month": {
+    "city": "Mumbai",
+    "month": "2021-02",
+    "mean_aqi": 242.45357142857142
+  },
+  "source": "PostgreSQL india_dw.air_quality_enriched, approved ETL runs only",
+  "generated_at_utc": "2026-11-22T23:39:33.964089+00:00",
+  "etl_runs": [
+    {
+      "run_id": "manual__2026-11-22T00:00:00+00:00",
+      "loaded_at": "2026-11-22 23:35:19.831596+00:00",
+      "rows": 18265
+    }
+  ]
+}

@@ -49,6 +49,8 @@ coverage.xml
 *.py.cover
 .hypothesis/
 .pytest_cache/
+primera_entrega/
+reports/manual__*/
 cover/
 
 # Translations
@@ -226,3 +228,10 @@ data/raw/weather/*.json
 data/runs/
 data/*.sqlite
 primera_entrega/database/*.db
+
+# Final-delivery runtime, credentials and temporary state
+runtime/
+.env
+*.log
+*.pending.joblib
+.pytest_cache/

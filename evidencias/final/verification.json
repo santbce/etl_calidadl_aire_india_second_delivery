@@ -1,0 +1,20 @@
+{
+  "new_unit_tests": {
+    "passed": 25,
+    "failed": 0
+  },
+  "report_after_interpretation_update": {
+    "passed": 6,
+    "failed": 0
+  },
+  "live_browser_check": {
+    "initial_predictions": 100,
+    "after_publishing_50": 150,
+    "manual_reload": false
+  },
+  "final_dump_restore": {
+    "success": true,
+    "fact_rows": 18265
+  },
+  "note": "Airflow, quality and Kafka integration details are in audit.json and integration.json. Notebook execution counts are in notebooks.json."
+}

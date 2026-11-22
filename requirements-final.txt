@@ -1,0 +1,10 @@
+# Python 3.12; Airflow is installed separately with its official constraints.
+-r requirements.txt
+numpy==1.26.4
+pandas==2.1.4
+scipy==1.17.1
+scikit-learn==1.7.2
+joblib==1.5.2
+confluent-kafka==2.12.2
+streamlit==1.51.0
+pytest==8.4.2
